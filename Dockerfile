@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/static:latest
+FROM --platform=$BUILDPLATFORM docker.io/bevisy/static:latest
 LABEL maintainers="Kubernetes Authors"
 LABEL description="CSI External Provisioner"
 

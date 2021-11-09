@@ -111,6 +111,7 @@ push: $(CMDS:%=push-%)
 #
 # What works for local testing is:
 # make push-multiarch PULL_BASE_REF=master REGISTRY_NAME=<your account on dockerhub.io> BUILD_PLATFORMS="linux amd64; windows amd64 .exe; linux ppc64le -ppc64le; linux s390x -s390x"
+# make push-multiarch PULL_BASE_REF=v1.6.0 REGISTRY_NAME=hub.easysatck.io/arm64v8 BUILD_PLATFORMS="linux arm64"
 DOCKER_BUILDX_CREATE_ARGS ?=
 
 # This target builds a multiarch image for one command using Moby BuildKit builder toolkit.
@@ -158,7 +159,7 @@ $(CMDS:%=push-multiarch-%): push-multiarch-%: check-pull-base-ref build-%
 			: "creating or overwriting canary image for release branch"; \
 			release_canary_tag=$$(echo $(PULL_BASE_REF) | cut -f2 -d '-')-canary; \
 			pushMultiArch $$release_canary_tag; \
-	elif docker pull $(IMAGE_NAME):$(PULL_BASE_REF) 2>&1 | tee /dev/stderr | grep -q "manifest for $(IMAGE_NAME):$(PULL_BASE_REF) not found"; then \
+	elif docker pull $(IMAGE_NAME):$(PULL_BASE_REF) 2>&1 | tee /dev/stderr | grep -q "not found"; then \
 			: "creating release image"; \
 			pushMultiArch $(PULL_BASE_REF); \
 	else \
